@@ -42,6 +42,14 @@ public class GameRestService {
             Game g = new Game();
             JsonObject gameJsonObject = gameArray.getJsonObject(i);
             System.out.println("game Json Object = : " + gameJsonObject);
+            g.setGid(gameJsonObject.getInt("gid"));
+            g.setName(gameJsonObject.getString("name"));
+            g.setYear(gameJsonObject.getInt("year"));
+            g.setRanking(gameJsonObject.getInt("ranking"));
+            g.setUsers_rated(gameJsonObject.getInt("users_rated"));
+            g.setUrl(gameJsonObject.getString("url"));
+            g.setImage(gameJsonObject.getString("image"));
+
 
             listOfGames.add(g);
         }
