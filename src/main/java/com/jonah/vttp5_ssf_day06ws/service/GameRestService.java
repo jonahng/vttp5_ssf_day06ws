@@ -8,11 +8,13 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-
+import com.jonah.vttp5_ssf_day06ws.constant.Constant;
 import com.jonah.vttp5_ssf_day06ws.model.Game;
+import com.jonah.vttp5_ssf_day06ws.repository.ListRepo;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
@@ -21,6 +23,10 @@ import jakarta.json.JsonReader;
 
 @Service
 public class GameRestService {
+
+    @Autowired
+    ListRepo listRepo;
+    
     RestTemplate restTemplate = new RestTemplate();
 
     public List<Game> getGames(){
@@ -50,10 +56,17 @@ public class GameRestService {
             g.setUrl(gameJsonObject.getString("url"));
             g.setImage(gameJsonObject.getString("image"));
 
+            listRepo.hashRightPush(Constant.gameRedisKey, g.getGid().toString(), g.toString());
+
 
             listOfGames.add(g);
         }
         return listOfGames;
+    }
+
+
+    public Game getGameFromId(String gameId){
+        return listRepo.getGameFromId(Constant.gameRedisKey, gameId);
     }
 
 
